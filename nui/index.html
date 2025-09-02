@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jr Banking</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Banking Interface -->
+        <div id="banking-container" class="hidden">
+            <div class="banking-header">
+                <div class="bank-logo">
+                    <i class="fas fa-university"></i>
+                    <h1>Jr Banking</h1>
+                </div>
+                <button class="close-btn" id="close-banking">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="banking-content">
+                <!-- Account Overview -->
+                <div class="account-overview">
+                    <div class="account-card">
+                        <div class="account-info">
+                            <h3 id="account-name">Loading...</h3>
+                            <p class="account-type">Checking Account</p>
+                        </div>
+                        <div class="balance-info">
+                            <span class="balance-label">Available Balance</span>
+                            <span class="balance-amount" id="account-balance">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="action-btn deposit-btn" id="deposit-btn">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Deposit</span>
+                    </button>
+                    <button class="action-btn withdraw-btn" id="withdraw-btn">
+                        <i class="fas fa-minus-circle"></i>
+                        <span>Withdraw</span>
+                    </button>
+                    <button class="action-btn transfer-btn" id="transfer-btn">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Transfer</span>
+                    </button>
+                    <button class="action-btn history-btn" id="history-btn">
+                        <i class="fas fa-history"></i>
+                        <span>History</span>
+                    </button>
+                </div>
+                
+                <!-- Transaction Form -->
+                <div id="transaction-form" class="transaction-form hidden">
+                    <div class="form-header">
+                        <h3 id="form-title">Transaction</h3>
+                        <button class="form-close" id="form-close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="form-content">
+                        <div class="input-group">
+                            <label for="amount-input">Amount</label>
+                            <div class="input-wrapper">
+                                <span class="input-prefix">$</span>
+                                <input type="number" id="amount-input" placeholder="0.00" min="1" step="1">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group" id="target-group" style="display: none;">
+                            <label for="target-input">Target Player ID</label>
+                            <input type="number" id="target-input" placeholder="Player ID" min="1">
+                        </div>
+                        
+                        <div class="input-group" id="pin-group" style="display: none;">
+                            <label for="pin-input">PIN Code</label>
+                            <input type="password" id="pin-input" placeholder="Enter PIN" maxlength="4">
+                        </div>
+                        
+                        <div class="fee-info" id="fee-info" style="display: none;">
+                            <div class="fee-row">
+                                <span>Transfer Amount:</span>
+                                <span id="transfer-amount">$0.00</span>
+                            </div>
+                            <div class="fee-row">
+                                <span>Transfer Fee:</span>
+                                <span id="transfer-fee">$0.00</span>
+                            </div>
+                            <div class="fee-row total">
+                                <span>Total Deduction:</span>
+                                <span id="total-deduction">$0.00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn-secondary" id="cancel-transaction">Cancel</button>
+                            <button class="btn-primary" id="confirm-transaction">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Transaction History -->
+                <div id="transaction-history" class="transaction-history hidden">
+                    <div class="history-header">
+                        <h3>Transaction History</h3>
+                        <button class="history-close" id="history-close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="history-content">
+                        <div class="history-filters">
+                            <select id="history-filter">
+                                <option value="all">All Transactions</option>
+                                <option value="deposit">Deposits</option>
+                                <option value="withdraw">Withdrawals</option>
+                                <option value="transfer_in">Incoming Transfers</option>
+                                <option value="transfer_out">Outgoing Transfers</option>
+                            </select>
+                        </div>
+                        
+                        <div class="history-list" id="history-list">
+                            <div class="no-transactions">
+                                <i class="fas fa-receipt"></i>
+                                <p>No transactions found</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Settings -->
+                <div class="banking-settings">
+                    <button class="settings-btn" id="settings-btn">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- PIN Setup Modal -->
+        <div id="pin-setup-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Set Up PIN Code</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Set a 4-digit PIN code to secure your transactions</p>
+                    <div class="pin-input-group">
+                        <input type="password" id="new-pin" placeholder="Enter PIN" maxlength="4">
+                        <input type="password" id="confirm-pin" placeholder="Confirm PIN" maxlength="4">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="skip-pin">Skip</button>
+                    <button class="btn-primary" id="set-pin">Set PIN</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Notification System -->
+        <div id="notification-container"></div>
+        
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
